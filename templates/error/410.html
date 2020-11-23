@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block title %}410 - GONE{% endblock %} {% block content %}
+<hr>
+<div class="container">
+    <a class="text-dark" href="{{ url_for('index') }}"><i class="fas fa-arrow-left"></i> Back to home</a>
+    <hr>
+    <div class="text-center text-dark">
+        <i class="fas fa-exclamation-triangle fa-8x"></i>
+    </div>
+    <br>
+    <p class="h2 text-center">Error 410 - Gone</p>
+    <p class="text-center">This page used to exist, but has been deleted or archived.</p>
+    <br>
+</div>
+{% endblock %}

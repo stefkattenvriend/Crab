@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block title %}500 - INTERNAL SERVER ERROR{% endblock %} {% block content %}
+<hr>
+<div class="container">
+    <a class="text-dark" href="{{ url_for('index') }}"><i class="fas fa-arrow-left"></i> Back to home</a>
+    <hr>
+    <div class="text-center text-dark">
+        <i class="fas fa-exclamation-triangle fa-8x"></i>
+    </div>
+    <br>
+    <p class="h2 text-center">Error 500 - Internal server error</p>
+    <p class="text-center">An error has occured on the server.</p>
+    <br>
+</div>
+{% endblock %}

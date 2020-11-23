@@ -1,0 +1,26 @@
+{% extends "layout.html" %} {% block title %}Posts{% endblock %} {% block content %}
+<hr>
+<div class="container">
+    <a class="float-right btn btn-dark" href="/posts/new"><i class="fas fa-plus"></i></a>
+    <p class="h2">Posts</p>
+</div>
+<div class="container">
+    {% if rows %}
+    <div class="card-columns">
+        {% for row in rows %}
+        <div class="card">
+            {% if row['img'] %}
+            <img class="card-img-top" src="{{ url_for('display_image', filename=row['img']) }}" alt=""> {% endif %}
+            <div class="card-body">
+                <h4 class="card-title">{{row["title"]}}</h4>
+                <p class="card-text">{{row["content"]}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="h2 text-center">No posts found</p>
+    {% endif %}
+</div>
+
+{% endblock %}
