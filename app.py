@@ -1,6 +1,7 @@
 from flask import Flask, session, request, Response, g, redirect, url_for, abort, render_template, flash, make_response
 from pathlib import Path
 from werkzeug.utils import secure_filename
+from datetime import datetime
 import sqlite3 as sql
 import os
 
@@ -8,28 +9,58 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
 def allowed_image(filename):
-
     if not "." in filename:
         return False
-
     ext = filename.rsplit(".", 1)[1]
-
     if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
         return True
     else:
         return False
 
 def allowed_image_filesize(filesize):
-
     if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
         return True
     else:
         return False
 
+def upload_image(request):
+    if not allowed_image_filesize(request.cookies["filesize"]):
+        print("Filesize exceeded maximum limit")
+        return "ERR_FileSize", None
+    
+    image = request.files["image"]
+
+    if image.filename == "":
+        print("No filename")
+        # Return "ERR_NoFile" if required
+        return "SUCCES", None
+
+    if allowed_image(image.filename):
+        now = datetime.now()
+        filename = now.strftime('%Y%m%d%H%M%S%f%z.png')
+        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+        print("Image saved")
+        return "SUCCES", filename
+
+    else:
+        print("That file extension is not allowed")
+        return "ERR_FileInvalid", None
+
 @app.route('/view/<filename>')
 def display_image(filename):
 	#print('display_image filename: ' + filename)
 	return redirect(url_for('static', filename='img/uploads/' + filename), code=301)
+
+
+def error_messages(i):
+    switcher={
+        "ERR_FileSize":"Filesize exceeded maximum limit",
+        "ERR_NoFile":"No filename",
+        "ERR_FileInvalid":"That file extension is not allowed",
+        "ERR_DB_Insert":"An error occurred in the Insert operation",
+        "ERR_Required_Not_Filled":"Not all required fields are filled"
+    }
+    return switcher.get(i,"Unknown error")
 
 # PAGES
 @app.route('/')
@@ -59,51 +90,47 @@ def posts():
 
 @app.route("/posts/new", methods=["GET", "POST"])
 def postnew():
-
+    errormessage = ""
     if request.method == "POST":
         try:
             title = request.form['title']
             content = request.form['content']
 
+            if title == "" or content == "":
+                feedback = "ERR_Required_Not_Filled"
+                errormessage = error_messages(feedback)
+                return render_template("posts/post_new.html", error = errormessage)
+
             if request.files:
-                if "filesize" in request.cookies:
+                (feedback,filename) = upload_image(request)
+            else:
+                feedback = "SUCCES"
+            
+            if feedback == "SUCCES":
+                with sql.connect("database.db") as con:
+                    cur = con.cursor()
+                    cur.execute("INSERT INTO posts (title,content,img) VALUES (?,?,?)",(title,content,filename) )
 
-                    if not allowed_image_filesize(request.cookies["filesize"]):
-                        print("Filesize exceeded maximum limit")
-                        # return redirect(request.url)
-
-                    image = request.files["image"]
-
-                    if image.filename == "":
-                        print("No filename")
-                        # return redirect(request.url)
-
-                    if allowed_image(image.filename):
-                        filename = secure_filename(image.filename)
-                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                        print("Image saved")
-
-                    else:
-                        print("That file extension is not allowed or no image uploaded")
-                        filename = None
-                        # return redirect(request.url)
-                
-            with sql.connect("database.db") as con:
-                cur = con.cursor()
-                cur.execute("INSERT INTO posts (title,content,img) VALUES (?,?,?)",(title,content,filename) )
-
-                con.commit()
-                print("Record successfully added")
-                con.close()
+                    con.commit()
+                    print("Record successfully added")
+                    cur.close()
+                return redirect(url_for('posts'))
+            else:
+                errormessage = error_messages(feedback)
+                return render_template("posts/post_new.html", error = errormessage)
         except:
             con.rollback()
             print("error in insert operation")
-            con.close()
-
+            feedback = "ERR_DB_Insert"
         finally:
-            return redirect(url_for('posts'))
+            try:
+                con.close()
+            except:
+                print("Connection already closed")
+            
+            errormessage = error_messages(feedback)
 
-    return render_template("posts/post_new.html")
+    return render_template("posts/post_new.html", error = errormessage)
 
 # ERROR PAGES
 @app.errorhandler(404)
