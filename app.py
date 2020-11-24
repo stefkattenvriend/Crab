@@ -120,6 +120,7 @@ def postnew():
             (feedback,filename) = upload_image(request)
         else:
             feedback = "SUCCES"
+            filename = ""
         
         if feedback == "SUCCES":
             result = sql_insert("INSERT INTO posts (title,content,img) VALUES (?,?,?)",(title,content,filename) )
