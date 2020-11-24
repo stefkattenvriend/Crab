@@ -121,7 +121,11 @@ def postnew():
                 errormessage = error_messages(feedback)
                 return render_template("posts/post_new.html", error = errormessage)
         except:
-            con.rollback()
+            try:
+                con.rollback()
+            except:
+                print("Connection already closed")
+            
             print("error in insert operation")
             feedback = "ERR_DB_Insert"
         finally:
