@@ -51,6 +51,20 @@ def display_image(filename):
 	#print('display_image filename: ' + filename)
 	return redirect(url_for('static', filename='img/uploads/' + filename), code=301)
 
+def sql_insert(query, task):
+    try:
+        with sql.connect("database.db") as con:
+            cur = con.cursor()
+            cur.execute(query, task)
+
+            con.commit()
+            print("Record successfully added")
+            cur.close()
+        return True
+    except:
+        return False
+    finally:
+        con.close()
 
 def error_messages(i):
     switcher={
@@ -94,47 +108,31 @@ def postnew():
     errormessage = ""
     feedback = "ERR_NONE"
     if request.method == "POST":
-        try:
-            title = request.form['title']
-            content = request.form['content']
+        title = request.form['title']
+        content = request.form['content']
 
-            if title == "" or content == "":
-                feedback = "ERR_Required_Not_Filled"
-                errormessage = error_messages(feedback)
-                return render_template("posts/post_new.html", error = errormessage)
-
-            if request.files:
-                (feedback,filename) = upload_image(request)
-            else:
-                feedback = "SUCCES"
-            
-            if feedback == "SUCCES":
-                with sql.connect("database.db") as con:
-                    cur = con.cursor()
-                    cur.execute("INSERT INTO posts (title,content,img) VALUES (?,?,?)",(title,content,filename) )
-
-                    con.commit()
-                    print("Record successfully added")
-                    cur.close()
-                return redirect(url_for('posts'))
-            else:
-                errormessage = error_messages(feedback)
-                return render_template("posts/post_new.html", error = errormessage)
-        except:
-            try:
-                con.rollback()
-            except:
-                print("Connection already closed")
-            
-            print("error in insert operation")
-            feedback = "ERR_DB_Insert"
-        finally:
-            try:
-                con.close()
-            except:
-                print("Connection already closed")
-            
+        if title == "" or content == "":
+            feedback = "ERR_Required_Not_Filled"
             errormessage = error_messages(feedback)
+            return render_template("posts/post_new.html", error = errormessage)
+
+        if request.files:
+            (feedback,filename) = upload_image(request)
+        else:
+            feedback = "SUCCES"
+        
+        if feedback == "SUCCES":
+            result = sql_insert("INSERT INTO posts (title,content,img) VALUES (?,?,?)",(title,content,filename) )
+            if result != True:
+                errormessage = error_messages("ERR_DB_Insert")
+                return render_template("posts/post_new.html", error = errormessage)
+            else:
+                return redirect(url_for('posts'))
+        else:
+            errormessage = error_messages(feedback)
+            return render_template("posts/post_new.html", error = errormessage)
+
+        errormessage = error_messages(feedback)
 
     return render_template("posts/post_new.html", error = errormessage)
 
