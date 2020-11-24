@@ -54,6 +54,7 @@ def display_image(filename):
 
 def error_messages(i):
     switcher={
+        "ERR_NONE":"",
         "ERR_FileSize":"Filesize exceeded maximum limit",
         "ERR_NoFile":"No filename",
         "ERR_FileInvalid":"That file extension is not allowed",
@@ -91,6 +92,7 @@ def posts():
 @app.route("/posts/new", methods=["GET", "POST"])
 def postnew():
     errormessage = ""
+    feedback = "ERR_NONE"
     if request.method == "POST":
         try:
             title = request.form['title']
