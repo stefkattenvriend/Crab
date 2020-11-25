@@ -9,12 +9,14 @@
     <div class="card-columns">
         {% for row in rows %}
         <div class="card">
+            <a class="text-dark text-decoration-none" href="/posts/{{row['id']}}">
             {% if row['img'] %}
             <img class="card-img-top" src="{{ url_for('display_image', filename=row['img']) }}" alt=""> {% endif %}
             <div class="card-body">
                 <h4 class="card-title">{{row["title"]}}</h4>
                 <p class="card-text">{{row["content"]}}</p>
             </div>
+        </a>
         </div>
         {% endfor %}
     </div>
