@@ -1,12 +1,15 @@
 from flask import Flask, session, request, Response, g, redirect, url_for, abort, render_template, flash, make_response
-from pathlib import Path
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from pathlib import Path
 import sqlite3 as sql
 import os
 
+import setup
+
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+setup.init()
 
 def allowed_image(filename):
     if not "." in filename:
@@ -103,7 +106,7 @@ def posts():
     finally:
         return render_template('posts/post_overview.html', rows = rows)
 
-@app.route("/posts/new", methods=["GET", "POST"])
+@app.route('/posts/new', methods=["GET", "POST"])
 def postnew():
     errormessage = ""
     feedback = "ERR_NONE"
@@ -136,6 +139,20 @@ def postnew():
         errormessage = error_messages(feedback)
 
     return render_template("posts/post_new.html", error = errormessage)
+
+@app.route('/posts/<id>')
+def viewpost(id):
+    try:
+        con = sql.connect("database.db")
+        con.row_factory = sql.Row
+
+        cur = con.cursor()
+        cur.execute("SELECT * FROM posts WHERE id = (?)",(id) )
+        post = cur.fetchone()
+    except:
+        post = None
+    finally:
+        return render_template("posts/post_view.html", post = post)
 
 # ERROR PAGES
 @app.errorhandler(404)
