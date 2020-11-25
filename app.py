@@ -1,12 +1,14 @@
 from flask import Flask, session, request, Response, g, redirect, url_for, abort, render_template, flash, make_response
-from pathlib import Path
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import sqlite3 as sql
 import os
 
+import setup
+
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+setup.init()
 
 def allowed_image(filename):
     if not "." in filename:
