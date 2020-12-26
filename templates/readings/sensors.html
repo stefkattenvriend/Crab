@@ -1,0 +1,15 @@
+{% extends "layout.html" %} {% block title %}Consoles{% endblock %} {% block content %}
+<div class="container">
+    <h3 class="card-title">Barometric</h3>
+
+    {% if found %}
+    <p class="card-text">Dit zijn de omstandigheden op Stefs kamer:</p>
+    <br>
+    <p class="card-text">Temperatuur: {{ temp }}</p>
+    <p class="card-text">Luchtdruk: {{ press }}</p>
+
+    {% else %}
+    <p class="card-text text-warning">Sensor niet gevonden!</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -11,6 +11,16 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 setup.init()
 
+try:
+    import barometric
+    barometric
+    baro = True
+    print(" * Barometric sensor: active")
+except:
+    print(" * Barometric sensor: not found")
+    baro = False
+
+
 def allowed_image(filename):
     if not "." in filename:
         return False
@@ -153,6 +163,19 @@ def viewpost(id):
         post = None
     finally:
         return render_template("posts/post_view.html", post = post)
+
+@app.route('/readings')
+def readings():
+    if baro:
+        temp = barometric.temp()
+        press = barometric.press()
+        while press>1500 or press<500:
+            press = barometric.press()
+    else:
+        temp = 0
+        press = 0
+
+    return render_template('readings/sensors.html', found = baro, temp = temp, press = press)
 
 # ERROR PAGES
 @app.errorhandler(404)
