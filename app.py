@@ -102,7 +102,7 @@ def test():
     return render_template('test.html')
 
 @app.route('/map')
-def test():
+def map():
 
     return render_template('map/map.html')
 
