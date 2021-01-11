@@ -21,14 +21,60 @@
 }
 
 .content-wrap {
-    padding-bottom: 8rem;
     /* Footer height */
+    padding-bottom: 8rem;
 }
 
 .footer {
+    /* Footer height */
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 8rem;
-    /* Footer height */
+}
+
+
+/* Custom scrollbar */
+
+::-webkit-scrollbar {
+    /* width */
+    width: 16px;
+    height: 16px;
+    background: darkgrey;
+}
+
+::-webkit-scrollbar-track {
+    /* Track */
+    background: darkgrey;
+}
+
+::-webkit-scrollbar-thumb {
+    /* Handle */
+    background: white;
+    border: 2px solid darkgrey;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    /* Handle on hover */
+    background: lightgrey;
+}
+
+::-webkit-scrollbar-corner {
+    /* Corner */
+    background: darkgrey;
+}
+
+::-webkit-scrollbar-button {
+    /* Buttons */
+    background-color: white;
+    height: 16px;
+    width: 16px;
+    border: 2px solid darkgrey;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-button:hover {
+    /* Buttons on hover */
+    background-color: lightgrey;
 }
