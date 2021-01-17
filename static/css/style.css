@@ -12,6 +12,51 @@
     background: linear-gradient(to right, red, orange, yellow, green, cyan, blue, violet);
 }
 
+.bg-crab-line {
+    height: 5px;
+    background: #ff2a2a;
+}
+
+
+/* Crab Bootstrap colors */
+
+.text-crab {
+    color: #ff2a2a!important;
+}
+
+.bg-crab {
+    background-color: #ff2a2a!important;
+}
+
+.border-crab {
+    border-color: #ff2a2a!important;
+}
+
+.btn-crab {
+    color: #fff;
+    background-color: #ff2a2a;
+    border-color: #ff2a2a;
+}
+
+.btn-crab:hover {
+    color: #fff;
+    background-color: #BF2020;
+    border-color: #BF2020;
+}
+
+.btn-outline-crab {
+    color: #ff2a2a;
+    background-color: transparent;
+    background-image: none;
+    border-color: #ff2a2a;
+}
+
+.btn-outline-crab:hover {
+    color: #fff;
+    background-color: #ff2a2a;
+    border-color: #ff2a2a;
+}
+
 
 /* Keep Footer where it belongs */
 
