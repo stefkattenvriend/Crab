@@ -106,6 +106,11 @@ def map():
 
     return render_template('map/map.html')
 
+@app.route('/about')
+def about():
+
+    return render_template('about/about.html')
+
 @app.route('/posts')
 def posts():
     try:

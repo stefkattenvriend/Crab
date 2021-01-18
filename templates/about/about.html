@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block title %}About{% endblock %} {% block content %}
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>About</h2>
+            <p>Ik ben Stef van Osch</p>
+            <p>Geboren op: 6 april 2001<br> Huidige woonplaats: Slijk-Ewijk<br>
+                <a class="text-crab" href="mailto:sagj.vanosch@gmail.com">sagj.vanosch@gmail.com</a><br> +31 6 31229451
+            </p>
+            <p>Momenteel studeer ik HBO informatica aan Avans Hogeschool 's-Hertogenbosch.</p>
+        </div>
+        <div class="col-md-4">
+            <img class="about-picture img-fluid" src="{{ url_for('static', filename='img/web/Stef.png') }}" alt="Stef">
+        </div>
+    </div>
+</div>
+{% endblock %}
