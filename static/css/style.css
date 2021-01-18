@@ -17,6 +17,16 @@
     background: #ff2a2a;
 }
 
+.banner-triangle {
+    fill: #ff2a2a;
+    height: 100%;
+    width: 100%;
+}
+
+.lead {
+    margin-bottom: 0!important;
+}
+
 
 /* Crab Bootstrap colors */
 
