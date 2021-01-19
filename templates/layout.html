@@ -10,6 +10,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <!-- Darktheme -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-darkmode@0.7.0/dist/darktheme.css" />
+
     <!-- Fontawesome Icons -->
     <script src="https://kit.fontawesome.com/6062b8bcdd.js" crossorigin="anonymous"></script>
 
@@ -31,6 +34,16 @@
 </head>
 
 <body>
+    <!-- Darktheme -->
+    <script src="https://unpkg.com/bootstrap-darkmode@0.7.0/dist/theme.js"></script>
+
+    <script>
+        const themeConfig = new ThemeConfig();
+        // place customizations here
+        themeConfig.initTheme();
+    </script>
+
+
     <div class="page-container">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-sm navbar-light bg-white">
@@ -66,6 +79,14 @@
                         </div>
                     </li> -->
                 </ul>
+                <ul class="navbar-nav">
+                    <li style="padding: .5rem 1rem;">
+                        <script>
+                            // this will write the html to the document and return the element.
+                            const darkSwitch = writeDarkSwitch(themeConfig);
+                        </script>
+                    </li>
+                </ul>
             </div>
 
         </nav>
@@ -76,8 +97,9 @@
         </div>
         <br>
         <!-- Footer-->
-        <footer class="text-light bg-dark py-2 footer">
+        <footer class="text-light py-2 footer">
             <div class="container">
+                <div class="bg-crab-line footer-line"></div>
                 <p class="float-right">
                     <a class="text-light" href="#">Back to top <i class="fas fa-arrow-up"></i></a>
                 </p>

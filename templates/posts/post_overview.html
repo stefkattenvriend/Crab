@@ -4,19 +4,21 @@
     <a class="float-right btn btn-dark" href="/posts/new"><i class="fas fa-plus"></i></a>
     <p class="h2">Posts</p>
 </div>
+<br>
 <div class="container">
     {% if rows %}
     <div class="card-columns">
         {% for row in rows %}
         <div class="card">
-            <a class="text-dark text-decoration-none" href="/posts/{{row['id']}}">
-            {% if row['img'] %}
-            <img class="card-img-top" src="{{ url_for('display_image', filename=row['img']) }}" alt=""> {% endif %}
-            <div class="card-body">
-                <h4 class="card-title">{{row["title"]}}</h4>
-                <p class="card-text">{{row["content"]}}</p>
-            </div>
-        </a>
+            <a class="custom-card" href="/posts/{{row['id']}}">
+                {% if row['img'] %}
+                <img class="card-img-top" src="{{ url_for('display_image', filename=row['img']) }}" alt=""> 
+                {% endif %}
+                <div class="card-body">
+                    <h4 class="card-title">{{row["title"]}}</h4>
+                    <p class="card-text">{{row["content"]}}</p>
+                </div>
+            </a>
         </div>
         {% endfor %}
     </div>
